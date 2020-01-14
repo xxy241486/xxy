@@ -1,0 +1,79 @@
+性能指标获取需要考虑的因素：
+1.	网络环境
+2.	访问地
+3.
+
+1	用户体验角度的性能指标定义
+参考文档：https://developers.google.com/web/fundamentals/performance/user-centric-performance-metrics?hl=zh-cn#%E5%B0%86%E6%8C%87%E6%A0%87%E5%AF%B9%E5%BA%94%E5%88%B0%E7%94%A8%E6%88%B7%E4%BD%93%E9%AA%8C
+体验	指标	视觉标准
+是否发生？	首次绘制 (FP)/首次内容绘制 (FCP)	导航是否成功启动？服务器是否有响应？
+是否有用？	首次有效绘制 (FMP)/主角元素计时	是否已渲染可以与用户互动的足够内容？
+是否可用？	可交互时间 (TTI)	用户可以与页面交互，还是页面仍在忙于加载？
+是否令人愉快？	耗时较长的任务（在技术上不存在耗时较长的任务）	交互是否顺畅而自然，没有滞后和卡顿？
+
+ 
+2	性能指标基线定义
+参考文档：https://developers.google.com/web/fundamentals/performance/rail 
+延迟与用户反应
+0 - 16 毫秒	人们特别擅长跟踪运动，如果动画不流畅，他们就会对运动心生反感。 用户可以感知每秒渲染 60 帧的平滑动画转场。也就是每帧 16 毫秒（包括浏览器将新帧绘制到屏幕上所需的时间），留给应用大约 10 毫秒的时间来生成一帧。
+0 - 100 毫秒	在此时间窗口内响应用户操作，他们会觉得可以立即获得结果。时间再长，操作与反应之间的连接就会中断。
+100 - 300 毫秒	用户会遇到轻微可觉察的延迟。
+300 - 1000 毫秒	在此窗口内，延迟感觉像是任务自然和持续发展的一部分。对于网络上的大多数用户，加载页面或更改视图代表着一个任务。
+1000+ 毫秒	超过 1 秒，用户的注意力将离开他们正在执行的任务。
+10,000+ 毫秒	用户感到失望，可能会放弃任务；之后他们或许不会再回来。
+
+RAIL 步骤	关键指标	用户操作
+响应	输入延迟时间（从点按到绘制）小于 100 毫秒。	用户点按按钮（例如打开导航）。
+动画	每个帧的工作（从 JS 到绘制）完成时间小于 16 毫秒。	用户滚动页面，拖动手指（例如，打开菜单）或看到动画。 拖动时，应用的响应与手指位置有关（例如，拉动刷新、滑动轮播）。 此指标仅适用于拖动的持续阶段，不适用于开始阶段。
+空闲	主线程 JS 工作分成不大于 50 毫秒的块。	用户没有与页面交互，但主线程应足够用于处理下一个用户输入。
+加载	页面可以在 1000 毫秒内就绪。	用户加载页面并看到关键路径内容。
+
+3	Lighthouse
+3.1	评测报告介绍
+华为云登录页评测报告详细链接：file:///C:/Users/x00241486/Downloads/console.huaweicloud.com_2019-12-31_16-02-32.html
+ 
+
+3.2	性能评分计算
+3.2.1	各性能指标介绍
+1.	FCP：浏览器渲染第一个DOM的时间点
+FCP time
+(in seconds)	Color-coding	FCP score
+(HTTP Archive percentile)
+0–2	Green (fast)	75–100
+2–4	Orange (average)	50–74
+Over 4	Red (slow)	0–49
+
+2.	FMP：
+在lighthouse 6.0将要被废弃 https://web.dev/first-meaningful-paint/ 改为Larget contentful paint
+FMP metric
+(in seconds)	Color-coding	FMP score
+(FCP HTTP Archive percentile)
+0–2	Green (fast)	75–100
+2–4	Orange (average)	50–74
+Over 4	Red (slow)	0–49
+
+3.	Speed index：在页面加载过程中，内容可视化显示的速度
+      Lighthouse首先捕获浏览器中加载页面的视频，然后计算帧之间的视觉进度
+Speed Index
+(in seconds)	Color-coding	Speed Index score
+0–4.3	Green (fast)	75–100
+4.4–5.8	Orange (average)	50–74
+Over 5.8	Red (slow)	0–49
+
+4.	TTI：
+TTI metric
+(in seconds)	Color-coding	TTI score
+(HTTP Archive percentile)
+0–5.2	Green (fast)	75–100
+5.3–7.3	Orange (average)	50–74
+Over 7.3	Red (slow)	0–49
+3.2.2	各性能指标权重
+1.	当前lighthouse git库最新node工具中的权重处理：
+      出自lighthouse代码块 C:\Users\x00241486\Downloads\lighthouse-master\lighthouse-master\lighthouse-core\config\default-config.js
+ 
+2.	未来新版本的权重处理：
+    当前lighthouse最新发布版本5.6.0，6.0在规划中
+    出自官方文档 https://web.dev/performance-scoring/#lighthouse-6
+ 
+
+
